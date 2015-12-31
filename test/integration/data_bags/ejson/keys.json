@@ -1,0 +1,9 @@
+{
+  "id": "keys",
+  "test": {
+    "encrypted_data": "iTlUcyQrjqPAIKVKqBcjEj2U7SdFqbAB2UPi1zWp8WiohkBhNHRGiKwu2Q9L\n3+zxW9QZ2av53wUzbalj8tgqqQ==\n",
+    "iv": "CRNjCX+PLZQVcldK3rZW2Q==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}
