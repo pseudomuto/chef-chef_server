@@ -25,6 +25,8 @@
 # THE SOFTWARE.
 
 describe "chef_server::default" do
+  INCLUDED_RECIPES = %w(hostname chef-server).freeze
+
   cached(:chef_run) do
     runner = ChefSpec::SoloRunner.new
     runner.converge(described_recipe)
@@ -32,5 +34,11 @@ describe "chef_server::default" do
 
   it "converges successfully" do
     expect { chef_run }.to_not raise_error
+  end
+
+  it "includes the required recipes" do
+    INCLUDED_RECIPES.each do |recipe|
+      expect(chef_run).to include_recipe(recipe)
+    end
   end
 end
