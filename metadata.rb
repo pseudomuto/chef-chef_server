@@ -10,8 +10,10 @@ version          "0.1.0"
 
 supports "ubuntu"
 
-depends "chef-server",  "~> 4.0"
-depends "hostname",     "~> 0.0"
+depends "chef-ingredient",  "~> 0.0"
+depends "chef-server",      "~> 4.0"
+depends "hostsfile",        "~> 2.0"
+depends "packagecloud",     "~> 0.0"
 
 chef_version ">= 12.5" if respond_to?(:chef_version)
 source_url "YOUR SOURCE REPO URL" if respond_to?(:source_url)

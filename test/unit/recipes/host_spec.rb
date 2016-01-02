@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: chef_server
-# Spec:: default
+# Spec:: host
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 sweeper.io
+# Copyright (c) 2016 sweeper.io
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-describe "chef_server::default" do
-  INCLUDED_RECIPES = %w(apt chef_server::host chef-server).freeze
-
+describe "chef_server::host" do
   cached(:chef_run) do
     runner = ChefSpec::SoloRunner.new
     runner.converge(described_recipe)
@@ -36,13 +34,10 @@ describe "chef_server::default" do
     expect { chef_run }.to_not raise_error
   end
 
-  it "includes the required recipes" do
-    INCLUDED_RECIPES.each do |recipe|
-      expect(chef_run).to include_recipe(recipe)
-    end
-  end
-
-  it "ensures chef-client 12.6.0 is installed" do
-    expect(chef_run).to upgrade_chef_ingredient("chef").with(version: "12.6.0")
+  it "appends api_fqdn to hosts file" do
+    expect(chef_run).to append_hostsfile_entry("127.0.0.1").with(
+      hostname: chef_run.node["chef-server"]["api_fqdn"],
+      unique: true
+    )
   end
 end

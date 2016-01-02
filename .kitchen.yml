@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  vm_hostname: chef.sweeper.io
+  customize:
+    memory: 4096
 
 provisioner:
   name: chef_zero

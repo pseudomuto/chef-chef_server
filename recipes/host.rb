@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: chef_server
-# Spec:: default
+# Recipe:: host
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 sweeper.io
+# Copyright (c) 2016 sweeper.io
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-describe "chef_server::default" do
-  INCLUDED_RECIPES = %w(apt chef_server::host chef-server).freeze
+hostname = node["chef-server"]["api_fqdn"]
 
-  cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new
-    runner.converge(described_recipe)
-  end
+ohai "reload_hostname" do
+  plugin "hostname"
+  action :nothing
+end
 
-  it "converges successfully" do
-    expect { chef_run }.to_not raise_error
-  end
+file "/etc/hostname" do
+  content "#{hostname}\n"
+  notifies :reload, "ohai[reload_hostname]", :immediately
+end
 
-  it "includes the required recipes" do
-    INCLUDED_RECIPES.each do |recipe|
-      expect(chef_run).to include_recipe(recipe)
-    end
-  end
+execute "hostname #{hostname}" do
+  not_if { node["hostname"] == hostname }
+  notifies :reload, "ohai[reload_hostname]", :immediately
+end
 
-  it "ensures chef-client 12.6.0 is installed" do
-    expect(chef_run).to upgrade_chef_ingredient("chef").with(version: "12.6.0")
-  end
+hostsfile_entry "127.0.0.1" do
+  hostname hostname
+  aliases %w(localhost)
+  comment "added by chef_server"
+  unique true
+  action :append
 end

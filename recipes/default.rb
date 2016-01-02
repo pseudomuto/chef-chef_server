@@ -24,10 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-node.override["set_fqdn"]                = "chef.sweeper.io"
-node.override["chef-server"]["api_fqdn"] = "chef.sweeper.io"
-node.override["chef-server"]["topology"] = "standalone"
-node.override["chef-server"]["version"]  = "12.3.1"
-
-include_recipe "hostname"
+include_recipe "apt"
+include_recipe "chef_server::host"
 include_recipe "chef-server"
+
+chef_ingredient "chef" do
+  action :upgrade
+  version "12.6.0"
+end
