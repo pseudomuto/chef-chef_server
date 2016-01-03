@@ -54,7 +54,7 @@ describe "chef_server" do
         its(:stdout) { should match(/name: default\nexpired: false/) }
       end
 
-      describe file("/tmp/chef-setup/#{user}.pem") do
+      describe file("/tmp/chef-setup/#{user}.tar.gz") do
         it { should exist }
       end
     end
@@ -63,10 +63,6 @@ describe "chef_server" do
       its(:exit_status) { should eq(0) }
       its(:stdout) { should match(/^name:\s*sweeper$/) }
       its(:stdout) { should match(/^full_name:\s*sweeper\.io$/) }
-    end
-
-    describe file("/tmp/chef-setup/sweeper-validator.pem") do
-      it { should exist }
     end
   end
 

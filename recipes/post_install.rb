@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: chef_server
-# Recipe:: default
+# Recipe:: post_install
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 sweeper.io
+# Copyright (c) 2016 sweeper.io
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-SetupConfig.initialize(node)
-
-include_recipe "apt"
-include_recipe "chef_server::host"
-include_recipe "chef-server"
-
-chef_ingredient "chef" do
-  action :upgrade
-  version SetupConfig.instance.client.version
+SetupConfig.instance.users.each do |user|
+  chef_server_user_package(user.username)
 end
 
-include_recipe "chef_server::setup"
-include_recipe "chef_server::post_install"
+execute "clean up global temp files" do
+  command "rm -f encrypted_data_bag_secret #{SetupConfig.instance.org.name}-validator.pem"
+  cwd SetupConfig.instance.path
+end

@@ -1,0 +1,24 @@
+current_dir = File.dirname(__FILE__)
+
+log_level                 :info
+log_location              STDOUT
+
+cookbook_copyright        "<%= @cookbook_copyright %>"
+cookbook_email            "<%= @cookbook_email %>"
+cookbook_license          "<%= @cookbook_license %>"
+data_bag_encrypt_version  <%= @data_bag_encrypt_version %>
+
+node_name                 "<%= @username %>"
+client_key                "#{current_dir}/<%= @username %>.pem"
+validation_client_name    "<%= @org_name %>-validator"
+validation_key            "#{current_dir}/<%= @org_name %>-validator.pem"
+chef_server_url           "https://<%= @server_name %>/organizations/<%= @org_name %>"
+encrypted_data_bag_secret "#{current_dir}/encrypted_data_bag_secret"
+
+if defined?(ChefDK::CLI)
+  begin
+    require "chef_gen/flavors"
+    chefdk.generator_cookbook = ChefGen::Flavors.path
+  rescue LoadError
+  end
+end

@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 describe "chef_server::default" do
-  INCLUDED_RECIPES = %w(apt chef_server::host chef-server chef_server::setup).freeze
+  INCLUDED_RECIPES = %w(apt chef_server::host chef-server chef_server::setup chef_server::post_install).freeze
 
   cached(:chef_run) do
     runner = Runner.new(config) do |node|

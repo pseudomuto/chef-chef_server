@@ -1,5 +1,12 @@
 ---
+knife:
+  cookbook_copyright: sweeper.io
+  cookbook_email: developers@sweeper.io
+  cookbook_license: mit
+  data_bag_encrypt_version: 2
+
 client:
+  chef_dir: .chef-sweeper
   version: 12.6.0
 
 server:

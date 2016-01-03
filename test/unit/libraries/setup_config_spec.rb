@@ -1,11 +1,22 @@
 describe SetupConfig do
   before(:each) { expect(config).to_not be_nil }
 
+  it "allows access to values via raw method" do
+    expect(config.raw("knife").key?("cookbook_copyright")).to be true
+  end
+
   it "sets attributes on the node" do
     expect(spec_node["chef-server"]["api_fqdn"]).to eq(config.server.fqdn)
     expect(spec_node["chef-server"]["topology"]).to eq(config.server.topology)
     expect(spec_node["chef-server"]["version"]).to eq(config.server.version)
     expect(spec_node["chef-server"]["configuration"]).to eq(config.server.configuration)
+  end
+
+  it "sets knife properties" do
+    expect(config.knife.cookbook_copyright).to eq("sweeper.io")
+    expect(config.knife.cookbook_email).to eq("developers@sweeper.io")
+    expect(config.knife.cookbook_license).to eq("mit")
+    expect(config.knife.data_bag_encrypt_version).to eq(2)
   end
 
   it "sets client properties" do

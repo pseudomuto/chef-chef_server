@@ -20,6 +20,14 @@ class SetupConfig
     node.set["chef-server"]["configuration"] = server.configuration
   end
 
+  def raw(key)
+    data[key]
+  end
+
+  def knife
+    @knife ||= OpenStruct.new(data["knife"])
+  end
+
   def client
     @client ||= OpenStruct.new(data["client"])
   end
