@@ -12,9 +12,10 @@ users:
     email: david@sweeper.io
     password: 12345p@55w0rd1
 
-orgs:
-  - name: sweeper
-    full_name: sweeper.io
+org:
+  name: sweeper
+  full_name: sweeper.io
+  users:
     admins:
       - sweeperadmin
     users:

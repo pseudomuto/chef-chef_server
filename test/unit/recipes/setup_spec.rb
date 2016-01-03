@@ -25,12 +25,11 @@
 # THE SOFTWARE.
 
 describe "chef_server::setup" do
-  let(:setup_dir) { File.join(Dir.pwd, "test", "fixtures") }
-  let(:setup_data) { YAML.load_file(File.join(setup_dir, "data.yml")) }
+  let(:setup_data) { YAML.load_file(File.join(SPEC_SETUP_DIR, "data.yml")) }
 
   cached(:chef_run) do
     runner = ChefSpec::SoloRunner.new do |node|
-      node.set["chef_server"]["setup_dir"] = setup_dir
+      node.set["chef_server"]["setup_dir"] = SPEC_SETUP_DIR
     end
 
     runner.converge(described_recipe)
@@ -45,9 +44,19 @@ describe "chef_server::setup" do
 
     setup_data["users"].each do |user|
       data = properties.each_with_object({}) { |key, hash| hash[key] = user[key] }
-      data.merge!(output_dir: setup_dir)
+      data.merge!(output_dir: SPEC_SETUP_DIR)
 
       expect(chef_run).to create_chef_server_user(user["username"]).with(data)
     end
+  end
+
+  it "creates an org based on data from data.yml" do
+    org = setup_data["org"]
+
+    expect(chef_run).to create_chef_server_org(org["name"]).with(
+      full_name: org["full_name"],
+      users: org["users"],
+      output_dir: SPEC_SETUP_DIR
+    )
   end
 end

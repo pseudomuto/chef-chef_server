@@ -47,14 +47,30 @@ describe "chef_server" do
     its(:stdout) { should eq("Chef: 12.6.0\n") }
   end
 
-  %w(sweeperadmin pseudomuto).each do |user|
-    describe command("chef-server-ctl list-user-keys #{user}") do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match(/name: default\nexpired: false/) }
+  context "users and organizations" do
+    %w(sweeperadmin pseudomuto).each do |user|
+      describe command("chef-server-ctl list-user-keys #{user}") do
+        its(:exit_status) { should eq 0 }
+        its(:stdout) { should match(/name: default\nexpired: false/) }
+      end
+
+      describe file("/tmp/chef-setup/#{user}.pem") do
+        it { should exist }
+      end
     end
 
-    describe file("/tmp/chef-setup/#{user}.pem") do
+    describe command("chef-server-ctl org-show sweeper") do
+      its(:exit_status) { should eq(0) }
+      its(:stdout) { should match(/^name:\s*sweeper$/) }
+      its(:stdout) { should match(/^full_name:\s*sweeper\.io$/) }
+    end
+
+    describe file("/tmp/chef-setup/sweeper-validator.pem") do
       it { should exist }
     end
+  end
+
+  describe command("chef-server-ctl test") do
+    its(:exit_status) { should eq(0) }
   end
 end

@@ -37,5 +37,9 @@ setup_data["users"].each do |user|
   end
 end
 
-setup_data["orgs"].each do |org|
+org = setup_data["org"]
+chef_server_org org["name"] do
+  full_name org["full_name"]
+  users org["users"]
+  output_dir setup_dir
 end

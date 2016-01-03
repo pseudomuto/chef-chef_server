@@ -4,6 +4,8 @@ require "chefspec/berkshelf"
 Dir["./libraries/**/*.rb"].each { |f| require f }
 Dir["./test/unit/support/**/*.rb"].each { |f| require f }
 
+SPEC_SETUP_DIR = File.join(Dir.pwd, "test", "fixtures")
+
 RSpec.configure do |config|
   config.log_level = :fatal
   config.platform  = "ubuntu"
