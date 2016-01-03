@@ -24,22 +24,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-setup_dir  = node["chef_server"]["setup_dir"]
-setup_data = YAML.load_file(File.join(setup_dir, "data.yml"))
+config = SetupConfig.instance
 
-setup_data["users"].each do |user|
-  chef_server_user user["username"] do
-    first_name user["first_name"]
-    last_name user["last_name"]
-    email user["email"]
-    password user["password"]
-    output_dir setup_dir
+config.users.each do |user|
+  chef_server_user user.username do
+    first_name user.first_name
+    last_name user.last_name
+    email user.email
+    password user.password
+    output_dir config.path
   end
 end
 
-org = setup_data["org"]
-chef_server_org org["name"] do
-  full_name org["full_name"]
-  users org["users"]
-  output_dir setup_dir
+chef_server_org config.org.name do
+  full_name config.org.full_name
+  users config.org.users
+  output_dir config.path
 end

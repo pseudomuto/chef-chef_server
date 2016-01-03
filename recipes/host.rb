@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-hostname = node["chef-server"]["api_fqdn"]
+hostname = SetupConfig.instance.server.fqdn
 
 ohai "reload_hostname" do
   plugin "hostname"

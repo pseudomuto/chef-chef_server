@@ -24,13 +24,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+SetupConfig.initialize(node)
+
 include_recipe "apt"
 include_recipe "chef_server::host"
 include_recipe "chef-server"
 
 chef_ingredient "chef" do
   action :upgrade
-  version "12.6.0"
+  version SetupConfig.instance.client.version
 end
 
 include_recipe "chef_server::setup"

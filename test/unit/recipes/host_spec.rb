@@ -26,7 +26,7 @@
 
 describe "chef_server::host" do
   cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new
+    runner = Runner.new(config)
     runner.converge(described_recipe)
   end
 
@@ -36,7 +36,7 @@ describe "chef_server::host" do
 
   it "appends api_fqdn to hosts file" do
     expect(chef_run).to append_hostsfile_entry("127.0.0.1").with(
-      hostname: chef_run.node["chef-server"]["api_fqdn"],
+      hostname: config.server.fqdn,
       unique: true
     )
   end

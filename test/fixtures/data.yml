@@ -1,4 +1,21 @@
 ---
+client:
+  version: 12.6.0
+
+server:
+  fqdn: chef.sweeper.io
+  topology: standalone
+  version: 12.3.1
+  configuration: |
+    notification_email "developers@sweeper.io"
+
+    nginx["non_ssl_port"]      = false
+    nginx["ssl_company_name"]  = "sweeper.io"
+    nginx["ssl_email_address"] = "developers@sweeper.io"
+    nginx["ssl_locality_name"] = "Ottawa"
+    nginx["ssl_state_name"]    = "ON"
+    nginx["ssl_country_name"]  = "CA"
+
 users:
   - username: sweeperadmin
     first_name: Sweeper

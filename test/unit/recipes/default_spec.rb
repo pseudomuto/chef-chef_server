@@ -28,7 +28,7 @@ describe "chef_server::default" do
   INCLUDED_RECIPES = %w(apt chef_server::host chef-server chef_server::setup).freeze
 
   cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new do |node|
+    runner = Runner.new(config) do |node|
       node.set["chef_server"]["setup_dir"] = SPEC_SETUP_DIR
     end
 
