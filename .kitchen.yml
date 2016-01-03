@@ -4,6 +4,8 @@ driver:
   vm_hostname: chef.sweeper.io
   customize:
     memory: 4096
+  synced_folders:
+    - ["test/fixtures/", "/tmp/chef-setup", "create: true"]
 
 provisioner:
   name: chef_zero

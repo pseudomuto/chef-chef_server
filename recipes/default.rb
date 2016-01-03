@@ -32,3 +32,5 @@ chef_ingredient "chef" do
   action :upgrade
   version "12.6.0"
 end
+
+include_recipe "chef_server::setup"

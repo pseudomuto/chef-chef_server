@@ -46,4 +46,15 @@ describe "chef_server" do
     its(:exit_status) { should eq(0) }
     its(:stdout) { should eq("Chef: 12.6.0\n") }
   end
+
+  %w(sweeperadmin pseudomuto).each do |user|
+    describe command("chef-server-ctl list-user-keys #{user}") do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match(/name: default\nexpired: false/) }
+    end
+
+    describe file("/tmp/chef-setup/#{user}.pem") do
+      it { should exist }
+    end
+  end
 end

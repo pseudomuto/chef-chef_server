@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: chef_server
-# Spec:: default
+# Spec:: setup
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 sweeper.io
+# Copyright (c) 2016 sweeper.io
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-describe "chef_server::default" do
-  INCLUDED_RECIPES = %w(apt chef_server::host chef-server chef_server::setup).freeze
+describe "chef_server::setup" do
+  let(:setup_dir) { File.join(Dir.pwd, "test", "fixtures") }
+  let(:setup_data) { YAML.load_file(File.join(setup_dir, "data.yml")) }
 
   cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new
+    runner = ChefSpec::SoloRunner.new do |node|
+      node.set["chef_server"]["setup_dir"] = setup_dir
+    end
+
     runner.converge(described_recipe)
   end
 
@@ -36,13 +40,14 @@ describe "chef_server::default" do
     expect { chef_run }.to_not raise_error
   end
 
-  it "includes the required recipes" do
-    INCLUDED_RECIPES.each do |recipe|
-      expect(chef_run).to include_recipe(recipe)
-    end
-  end
+  it "creates a user for each one defined in data.yml" do
+    properties = %w(first_name last_name email password)
 
-  it "ensures chef-client 12.6.0 is installed" do
-    expect(chef_run).to upgrade_chef_ingredient("chef").with(version: "12.6.0")
+    setup_data["users"].each do |user|
+      data = properties.each_with_object({}) { |key, hash| hash[key] = user[key] }
+      data.merge!(output_dir: setup_dir)
+
+      expect(chef_run).to create_chef_server_user(user["username"]).with(data)
+    end
   end
 end

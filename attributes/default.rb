@@ -1,3 +1,5 @@
+default["chef_server"]["setup_dir"] = "/tmp/chef-setup"
+
 override["chef-server"]["api_fqdn"] = "chef.sweeper.io"
 override["chef-server"]["topology"] = "standalone"
 override["chef-server"]["version"]  = "12.3.1"

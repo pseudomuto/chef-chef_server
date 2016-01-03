@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: chef_server
-# Spec:: default
+# Recipe:: setup
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 sweeper.io
+# Copyright (c) 2016 sweeper.io
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-describe "chef_server::default" do
-  INCLUDED_RECIPES = %w(apt chef_server::host chef-server chef_server::setup).freeze
+setup_dir  = node["chef_server"]["setup_dir"]
+setup_data = YAML.load_file(File.join(setup_dir, "data.yml"))
 
-  cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new
-    runner.converge(described_recipe)
+setup_data["users"].each do |user|
+  chef_server_user user["username"] do
+    first_name user["first_name"]
+    last_name user["last_name"]
+    email user["email"]
+    password user["password"]
+    output_dir setup_dir
   end
+end
 
-  it "converges successfully" do
-    expect { chef_run }.to_not raise_error
-  end
-
-  it "includes the required recipes" do
-    INCLUDED_RECIPES.each do |recipe|
-      expect(chef_run).to include_recipe(recipe)
-    end
-  end
-
-  it "ensures chef-client 12.6.0 is installed" do
-    expect(chef_run).to upgrade_chef_ingredient("chef").with(version: "12.6.0")
-  end
+setup_data["orgs"].each do |org|
 end

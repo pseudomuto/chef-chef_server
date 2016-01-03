@@ -1,0 +1,21 @@
+---
+users:
+  - username: sweeperadmin
+    first_name: Sweeper
+    last_name: Admin
+    email: developers@sweeper.io
+    password: somepasswordGoes@here1234
+
+  - username: pseudomuto
+    first_name: David
+    last_name: Muto
+    email: david@sweeper.io
+    password: 12345p@55w0rd1
+
+orgs:
+  - name: sweeper
+    full_name: sweeper.io
+    admins:
+      - sweeperadmin
+    users:
+      - pseudomuto

@@ -15,3 +15,4 @@ bin/*
 .chef
 .kitchen/
 .kitchen.local.yml
+test/fixtures/*.pem
