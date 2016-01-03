@@ -8,7 +8,7 @@ property :password, String, required: true
 property :output_dir, String, required: true
 
 action :create do
-  execute "chef user" do
+  execute "create chef user #{new_resource.username}" do
     command new_resource.create_command
     not_if "chef-server-ctl user-list | grep '#{new_resource.username}'"
   end

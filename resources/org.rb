@@ -6,7 +6,10 @@ property :users, Hash, default: lazy { Hash.new }
 property :output_dir
 
 load_current_value do
-  current_value_does_not_exist! if `chef-server-ctl org-list | grep '#{name}'`.chomp.empty?
+  command = shell_out("chef-server-ctl org-list | grep '#{name}'")
+  command.run_command
+
+  current_value_does_not_exist! unless command.exitstatus == 0
 end
 
 action :create do
