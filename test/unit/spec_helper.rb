@@ -19,7 +19,7 @@ module CommonRecipeContext
 end
 
 class Runner < ChefSpec::SoloRunner
-  def initialize(config, options = {})
+  def initialize(_config, options = {})
     super(options)
   end
 end

@@ -81,7 +81,8 @@ describe "chef_server::post_install" do
 
       it "creates the user directory" do
         all_users do |user|
-          expect(chef_run).to create_directory(File.join(config.path, user, config.client.chef_dir, "trusted_certs")).with(
+          path = File.join(config.path, user, config.client.chef_dir, "trusted_certs")
+          expect(chef_run).to create_directory(path).with(
             recursive: true
           )
         end
@@ -94,7 +95,7 @@ describe "chef_server::post_install" do
       end
 
       it "copies the self-signed cert to user/chef_dir/trusted_certs" do
-        all_users do |user|
+        all_users do |_user|
           expect(chef_run).to run_execute("copy trusted certificate")
         end
       end

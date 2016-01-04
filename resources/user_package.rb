@@ -36,7 +36,7 @@ def create_directory(context)
 end
 
 def copy_files(context)
-  files    = [
+  files = [
     "#{user}.pem",
     "#{SetupConfig.instance.org.name}-validator.pem",
     "encrypted_data_bag_secret"
@@ -61,9 +61,10 @@ def copy_trusted_certificate(context)
 end
 
 def generate_knife_file(context)
-  options = SetupConfig.instance.raw("knife").symbolize_keys!.merge(
-    org_name: SetupConfig.instance.org.name,
-    server_name: SetupConfig.instance.server.fqdn,
+  config = SetupConfig.instance
+  options = config.raw("knife").symbolize_keys!.merge(
+    org_name: config.org.name,
+    server_name: config.server.fqdn,
     username: user
   )
 
