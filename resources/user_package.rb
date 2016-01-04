@@ -3,7 +3,7 @@ default_action :create
 property :user, String, name_property: true
 
 load_current_value do
-  path = ::File.join(SetupConfig.instance.path, user, ".pem")
+  path = ::File.join(SetupConfig.instance.path, "#{user}.pem")
   current_value_does_not_exist! unless ::File.exist?(path)
 end
 

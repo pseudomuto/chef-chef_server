@@ -55,7 +55,7 @@ describe "chef_server::post_install" do
         allow(File).to receive(:exist?).and_call_original
 
         all_users do |user|
-          path = File.join(SetupConfig.instance.path, user, ".pem")
+          path = File.join(SetupConfig.instance.path, "#{user}.pem")
           allow(File).to receive(:exist?).with(path).and_return(false)
         end
       end
@@ -70,7 +70,7 @@ describe "chef_server::post_install" do
         allow(File).to receive(:exist?).and_call_original
 
         all_users do |user|
-          path = File.join(SetupConfig.instance.path, user, ".pem")
+          path = File.join(SetupConfig.instance.path, "#{user}.pem")
           allow(File).to receive(:exist?).with(path).and_return(true)
         end
       end
